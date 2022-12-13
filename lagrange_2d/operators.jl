@@ -47,15 +47,21 @@ function A_operator(v,xi,eta,mu)
             for k = 1:M
                 if i < N
                     sigma[i,j,k,1] = v[i+1,j,k] - v[i,j,k]
+                elseif i == N
+                    sigma[i,j,k,1] = - v[i,j,k]
                 end
                 if j < N
                     sigma[i,j,k,2] = v[i,j+1,k] - v[i,j,k]
+                elseif j == N
+                    sigma[i,j,k,2] = - v[i,j,k]
                 end
                 if k < M
                     sigma[i,j,k,3] = v[i,j,k+1] - v[i,j,k]
+                elseif k == M
+                    sigma[i,j,k,3] = - v[i,j,k]
                 end
-                    sigma[i,j,k,1] = sigma[i,j,k,1] - mu[i,j,k,1]
-                    sigma[i,j,k,2] = sigma[i,j,k,2] - mu[i,j,k,2]
+                sigma[i,j,k,1] = sigma[i,j,k,1] - mu[i,j,k,1]
+                sigma[i,j,k,2] = sigma[i,j,k,2] - mu[i,j,k,2]
             end
             for k = 1:M+1
                 for l = 1:M+1

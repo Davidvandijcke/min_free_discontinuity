@@ -39,11 +39,11 @@ function primal_dual()
         end
     end
 
-    k = 0
+    count = 0
     error = 1
     energy = E_operator(v_next,xi_next,eta_next,mu_next,sigma,m,p)
 
-    while error > E_algo && k < K_algo
+    while error > E_algo && count < K_algo
         A_sigma, A_m, A_p = A_operator(v_bar,xi_bar,eta_bar,mu_bar)
         sigma = projection_K!(sigma + sigma_0 * A_sigma)
         m = m + sigma_0 * A_m
@@ -71,13 +71,16 @@ function primal_dual()
 
         energy_next = E_operator(v_next,xi_next,eta_next,mu_next,sigma,m,p)
         error = abs(energy_next - energy)
-        k = k + 1
+        count = count + 1
 
         energy = energy_next
         v = copy(v_next)
         xi = copy(xi_next)
         eta = copy(eta_next)
         mu = copy(mu_next)
+
+        # print the error and energy
+        println("count = ", count, " error = ", error, " energy = ", energy)
     end 
     return v, sigma
 end

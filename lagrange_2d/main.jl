@@ -12,7 +12,7 @@ include("primal_dual.jl")
 # provided one adapts the definition of $\alpha$, $\psi$ and $\rho$.
 
 ## Discretization of the domain and the color channel
-const N, M = 16, 16
+const N, M = 32, 32
 #const N, M = 32, 32
 
 ## Precision constants.
@@ -68,7 +68,7 @@ for i = 1:N
     for j = 1:N
         for k = 1:M
             # Mumford-Shah functional
-            rho[i,j,k] = gamma * (k/M - f(i/N))^2 
+            rho[i,j,k] = gamma * (k/M - f(i/N, j/N))^2 
             # Thermal Insulation functional
             #if k == 1
             #    rho[i,k] = 0
