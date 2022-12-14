@@ -13,6 +13,9 @@ from skimage import io
 # However, the method also extends to other free-discontinuity functionals,
 # provided one adapts the definition of $\alpha$, $\psi$ and $\rho$.
 
+
+
+
 # read in image instead
 img = io.imread('camera.png')
 
@@ -21,7 +24,7 @@ N, M = img.shape
 N, M = 32, 32
 
 ## Precision constants.
-E_algo = 0.0000001
+E_algo = 1*10**(-3) # 1*10**(-8)
 K_algo = 20000
 
 ## Operator norm of A
@@ -65,7 +68,7 @@ psi = np.full((N,N,M,M), beta)
                 # psi[i,j,k,l] = beta * ((k/M)**2 + (l/M)**2)# Set the error term
 # For the Mumford-Shah functional, we need to define an image f first.
 def f(x,y):
-    if np.sqrt((x-1/2)**2 + (y-1/2)**2) < 1/8:
+    if np.sqrt((x-1/2)**2 + (y-1/2)**2) < 1/4:
         return 1
     else:
         return 0
@@ -75,7 +78,7 @@ for i in range(N):
     for j in range(N):
         for k in range(M):
             # Mumford-Shah functional with image as function
-            rho[i,j,k] = gamma * ((k+1)/M - f((i+1)/N, (j+1)/N))**2 
+            rho[i,j,k] = gamma * ((k+1)/M - f((i+1)/N, (j+1)/N))**2 # see Eq. 4.10 in thesis -- L in Pock et al is 3th discretization dimension (subgraph of u / gamma)
 
             # Mumford-Shah functional with image file
             #rho[i,j,k] = gamma * (k/M - img[i, j])**2 

@@ -3,7 +3,7 @@ import numpy as np
 from operators import *
 from projections import *
 
-
+import time
 
 def primal_dual(N, M, sigma_0, tau_0, L_0, psi, alpha, rho, U0, S, E_algo = 1e-6, K_algo = 1000):
     v = np.zeros((N,N,M))
@@ -40,6 +40,10 @@ def primal_dual(N, M, sigma_0, tau_0, L_0, psi, alpha, rho, U0, S, E_algo = 1e-6
     energy = E_operator(v_next,xi_next,eta_next,mu_next,sigma,m,p,N,M)
 
     while error > E_algo and count < K_algo:
+        
+        # log start time
+        start = time.time()
+        
         A_sigma, A_m, A_p = A_operator(v_bar,xi_bar,eta_bar,mu_bar,N,M)
         sigma = projection_K(sigma + sigma_0 * A_sigma, alpha, rho, N, M)
         m = m + sigma_0 * A_m
@@ -88,6 +92,8 @@ def primal_dual(N, M, sigma_0, tau_0, L_0, psi, alpha, rho, U0, S, E_algo = 1e-6
         mu = np.copy(mu_next)
         
         # k modulo 50
+        
+        lapse = time.time() - start
   
-        print("count = ", count, "energy = ", energy, "error = ", error)
+        print("count = ", count, "sec =", lapse, "energy = ", energy, "error = ", error)
     return v, sigma
